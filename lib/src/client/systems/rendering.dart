@@ -36,8 +36,8 @@ class LightRenderingSystem extends VoidEntitySystem {
       index++;
     }
     if (world.frame % 6 == 0) {
-      fireHue += (1 - fireHue/60) > random.nextDouble() ? 1 : -1;
-      fireLightness += (1 - (fireLightness)/80) > random.nextDouble() ? 1 : -1;
+      fireHue += (1 - fireHue/60) > random.nextDouble() ? 4 : -4;
+      fireLightness += (1 - (fireLightness)/80) > random.nextDouble() ? 4 : -4;
     }
     canvas.context2D..setFillColorHsl(50, 100, 50)
                     ..fillRect(0, 0, 300, 300)

@@ -1,4 +1,4 @@
 ld29_warmup
 ===========
 
-[Play here](http://denniskaselow.github.io/ld29_warmup)
+Playing around with shadows and blending

@@ -59,3 +59,31 @@ class LightRenderingSystem extends VoidEntitySystem {
 
   }
 }
+
+class BodyRenderer extends EntityProcessingSystem {
+  ComponentMapper<Transform> tm;
+  ComponentMapper<Body> bm;
+  CanvasRenderingContext2D ctx;
+  BodyRenderer(this.ctx) : super(Aspect.getAspectForAllOf([Transform, Body]));
+
+  @override
+  void processEntity(Entity entity) {
+    var t = tm.get(entity);
+    var b = bm.get(entity);
+
+    var last = b.vertices.last;
+    ctx..save()
+       ..strokeStyle = 'black'
+       ..fillStyle = 'black'
+       ..translate(t.pos.x, t.pos.y)
+       ..beginPath()
+       ..moveTo(last.x, last.y);
+
+    b.vertices.forEach((vertex) => ctx.lineTo(vertex.x, vertex.y));
+
+    ctx..stroke()
+       ..fill()
+       ..closePath()
+       ..restore();
+  }
+}

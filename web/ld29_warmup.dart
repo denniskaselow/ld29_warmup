@@ -1,6 +1,6 @@
 import 'package:ld29_warmup/client.dart';
 
-@MirrorsUsed(targets: const [LightRenderingSystem, BodyRenderer, RaycastingSystem
+@MirrorsUsed(targets: const [LightRenderingSystem, RaycastingSystem
                             ])
 import 'dart:mirrors';
 
@@ -24,10 +24,8 @@ class Game extends GameBase {
     return [
             new CanvasCleaningSystem(canvas),
             new LightRenderingSystem(canvas),
-//            new BodyRenderer(ctx),
             new RaycastingSystem(canvas, ctx),
-            new FpsRenderingSystem(ctx),
-            new AnalyticsSystem(AnalyticsSystem.GITHUB, 'ld29_warmup')
+            new FpsRenderingSystem(ctx)
     ];
   }
 }

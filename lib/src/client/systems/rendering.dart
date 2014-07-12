@@ -4,6 +4,7 @@ part of client;
 class LightRenderingSystem extends VoidEntitySystem {
   CanvasElement canvas;
   CanvasQuery light;
+  CanvasElement buffer;
   int index = 0;
   int fireHue = 0;
   int fireLightness = 50;
@@ -28,6 +29,16 @@ class LightRenderingSystem extends VoidEntitySystem {
       x = event.offset.x;
       y = event.offset.y;
     });
+
+    buffer = new CanvasElement(width: 600, height: 600);
+    buffer.context2D..setFillColorHsl(50, 100, 50)
+        ..fillRect(0, 0, 300, 300)
+        ..setFillColorHsl(50, 0, 100)
+        ..fillRect(300, 0, 300, 300)
+        ..setFillColorHsl(200, 100, 50)
+        ..fillRect(0, 300, 300, 300)
+        ..setFillColorHsl(0, 100, 50)
+        ..fillRect(300, 300, 300, 300);
   }
 
   @override
@@ -39,14 +50,7 @@ class LightRenderingSystem extends VoidEntitySystem {
       fireHue += (1 - fireHue/60) > random.nextDouble() ? 4 : -4;
       fireLightness += (1 - (fireLightness)/80) > random.nextDouble() ? 4 : -4;
     }
-    canvas.context2D..setFillColorHsl(50, 100, 50)
-                    ..fillRect(0, 0, 300, 300)
-                    ..setFillColorHsl(50, 0, 100)
-                    ..fillRect(300, 0, 300, 300)
-                    ..setFillColorHsl(200, 100, 50)
-                    ..fillRect(0, 300, 300, 300)
-                    ..setFillColorHsl(0, 100, 50)
-                    ..fillRect(300, 300, 300, 300)
+    canvas.context2D..drawImage(buffer, 0, 0)
                     ..save()
                     ..globalCompositeOperation = 'luminosity'
                     ..drawImage(light.canvas, x - 600, y - 600)
@@ -57,34 +61,6 @@ class LightRenderingSystem extends VoidEntitySystem {
                     ..restore();
 
 
-  }
-}
-
-class BodyRenderer extends EntityProcessingSystem {
-  ComponentMapper<Transform> tm;
-  ComponentMapper<Body> bm;
-  CanvasRenderingContext2D ctx;
-  BodyRenderer(this.ctx) : super(Aspect.getAspectForAllOf([Transform, Body]));
-
-  @override
-  void processEntity(Entity entity) {
-    var t = tm.get(entity);
-    var b = bm.get(entity);
-
-    var last = b.vertices.last;
-    ctx..save()
-       ..strokeStyle = 'black'
-       ..fillStyle = 'black'
-       ..translate(t.pos.x, t.pos.y)
-       ..beginPath()
-       ..moveTo(last.x, last.y);
-
-    b.vertices.forEach((vertex) => ctx.lineTo(vertex.x, vertex.y));
-
-    ctx..stroke()
-       ..fill()
-       ..closePath()
-       ..restore();
   }
 }
 
@@ -163,7 +139,7 @@ class RaycastingSystem extends EntitySystem {
     anglesAndPos.forEach((angleAndPos) {
        ctx.lineTo(angleAndPos[1], angleAndPos[2]);
     });
-    ctx..stroke()
+    ctx
        ..fill()
        ..closePath()
        ..restore();

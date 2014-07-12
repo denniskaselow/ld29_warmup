@@ -1,7 +1,7 @@
 library client;
 
-import 'dart:html';
-export 'dart:html';
+import 'dart:html' show CanvasElement, CanvasRenderingContext2D;
+export 'dart:html' show CanvasElement, CanvasRenderingContext2D;
 
 import 'package:ld29_warmup/shared.dart';
 export 'package:ld29_warmup/shared.dart';
